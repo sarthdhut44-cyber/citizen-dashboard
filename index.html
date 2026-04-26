@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neo-City Citizen Dashboard</title>
+    <meta name="description" content="Live smart city dashboard with weather, currency, citizen profiles, and AI assistance." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app">
+      <header class="hero">
+        <div class="container">
+          <h1>Neo-City <span class="accent">Dashboard</span></h1>
+          <p>Real-time information for the modern citizen</p>
+        </div>
+      </header>
+
+      <main class="container">
+        <div class="dashboard-grid">
+          <!-- Weather Card -->
+          <div class="card glass" id="weather-card">
+            <div class="card-header">
+              <h2>Current Weather</h2>
+              <button class="refresh-btn" id="refresh-weather" title="Refresh">↻</button>
+            </div>
+            <div class="card-content" id="weather-content">
+              <div class="loader"></div>
+            </div>
+          </div>
+
+          <!-- Currency Card -->
+          <div class="card glass" id="currency-card">
+            <div class="card-header">
+              <h2>Exchange Rates</h2>
+              <button class="refresh-btn" id="refresh-currency" title="Refresh">↻</button>
+            </div>
+            <div class="card-content" id="currency-content">
+              <div class="loader"></div>
+            </div>
+          </div>
+
+          <!-- Citizen Card -->
+          <div class="card glass" id="citizen-card">
+            <div class="card-header">
+              <h2>Citizen Profile</h2>
+              <button class="refresh-btn" id="refresh-citizen" title="Refresh">↻</button>
+            </div>
+            <div class="card-content" id="citizen-content">
+              <div class="loader"></div>
+            </div>
+          </div>
+
+          <!-- Fact Card -->
+          <div class="card glass" id="fact-card">
+            <div class="card-header">
+              <h2>City Fact of the Day</h2>
+              <button class="refresh-btn" id="refresh-fact" title="Refresh">↻</button>
+            </div>
+            <div class="card-content" id="fact-content">
+              <div class="loader"></div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Chatbot Widget -->
+      <div id="chat-widget" class="chat-closed">
+        <button id="chat-toggle" class="chat-trigger">
+          <span class="icon">💬</span>
+          <span class="text">Ask Neo-AI</span>
+        </button>
+        <div class="chat-window glass">
+          <div class="chat-header">
+            <h3>Neo-AI Assistant</h3>
+            <button id="chat-close">✕</button>
+          </div>
+          <div id="chat-messages" class="chat-messages">
+            <div class="message bot">Hello! I'm Neo-AI. I have access to your live dashboard data. How can I help you today?</div>
+          </div>
+          <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Type your question..." />
+            <button id="chat-send">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
