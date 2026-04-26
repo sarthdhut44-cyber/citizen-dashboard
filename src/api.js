@@ -67,48 +67,29 @@ export const fetchFact = async () => {
 };
 
 export const sendMessageToAI = async (message, context) => {
-  const HF_TOKEN = import.meta.env.VITE_HF_TOKEN;
-  if (!HF_TOKEN) {
-    return "API Token missing. Please set VITE_HF_TOKEN in your .env file.";
-  }
-
   try {
-    const prompt = `You are a helpful smart city assistant. Use the following live dashboard data to answer the user's question.
-Context:
-${JSON.stringify(context, null, 2)}
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message, context }),
+    });
 
-User Question: ${message}
-Answer:`;
-
-    const response = await fetch(
-      "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct",
-      {
-        headers: { Authorization: `Bearer ${HF_TOKEN}`, "Content-Type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({
-          inputs: `You are a helpful smart city assistant. Use the following live dashboard data to answer the user's question.\n\nContext:\n${JSON.stringify(context, null, 2)}\n\nUser Question: ${message}\n\nAnswer:`,
-          parameters: { max_new_tokens: 250, return_full_text: false },
-        }),
-      }
-    );
-
-    if (response.status === 404) {
-      console.warn("HF API returned 404. Falling back to mock response.");
+    if (!response.ok) {
+      console.warn("Serverless function failed. Falling back to mock response.");
       return getMockResponse(message, context);
     }
 
     const result = await response.json();
     
-    if (Array.isArray(result) && result[0]?.generated_text) {
-      return result[0].generated_text.trim();
-    } else if (result.generated_text) {
-      return result.generated_text.trim();
+    if (result.choices && result.choices[0]?.message?.content) {
+      return result.choices[0].message.content.trim();
     } else if (result.error) {
-        return `AI Error: ${result.error}`;
+      console.error("AI Error:", result.error);
+      return getMockResponse(message, context);
     }
     return getMockResponse(message, context);
   } catch (error) {
-    console.error('Error calling AI:', error);
+    console.error('Error calling serverless AI:', error);
     return getMockResponse(message, context);
   }
 };
